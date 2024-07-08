@@ -86,24 +86,27 @@ if st.button("Predecir"):
     prediction = np.expm1(prediction_log)  # Inverse of the log transformation
     st.write(f"Valor del precio mediano de la vivienda: ${prediction[0]:,.2f}")
 
-    # Plot of selected features vs predicted value
+# Plot of selected features vs prediction
     st.subheader("Selected Features vs Predicted Value")
 
+    fig, ax = plt.subplots(figsize=(10, 6))
+
+    # Plotting the selected features vs prediction
     feature_names = ['Latitude', 'Longitude', 'Housing Median Age', 'Total Rooms',
                      'Total Bedrooms', 'Population', 'Households', 'Median Income']
-    feature_values = [latitude, longitude, housing_median_age, total_rooms,
-                      total_bedrooms, population, households, median_income]
 
-    # Create a bar plot for selected features and predicted value
-    fig, ax = plt.subplots(figsize=(10, 6))
-    ax.barh(feature_names, feature_values, color='blue', label='Selected Features')
-    ax.axvline(x=prediction[0], color='red', linestyle='--', label=f'Predicted Value: ${prediction[0]:,.2f}')
+    # Plotting the selected features
+    ax.scatter(feature_names, input_features[0], label='Selected Features', color='blue', marker='o', s=100)
 
-    ax.set_xlabel('Feature Values')
+    # Plotting the predicted value as a horizontal line
+    ax.axhline(y=prediction[0], color='red', linestyle='--', label=f'Predicted Value: ${prediction[0]:,.2f}')
+
+    ax.set_xlabel('Features')
+    ax.set_ylabel('Values')
     ax.set_title('Selected Features vs Predicted Median House Value')
     ax.legend()
+    ax.grid(True)
 
-    plt.tight_layout()
     st.pyplot(fig)
 
 # Run the app
