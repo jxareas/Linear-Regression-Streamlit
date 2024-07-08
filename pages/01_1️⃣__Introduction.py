@@ -86,7 +86,7 @@ if st.button("Predecir"):
     prediction = np.expm1(prediction_log)  # Inverse of the log transformation
     st.write(f"Valor del precio mediano de la vivienda: ${prediction[0]:,.2f}")
 
-# Plot of selected features vs prediction
+    # Plot of selected features vs prediction
     st.subheader("Selected Features vs Predicted Value")
 
     fig, ax = plt.subplots(figsize=(10, 6))
@@ -94,9 +94,14 @@ if st.button("Predecir"):
     # Plotting the selected features vs prediction
     feature_names = ['Latitude', 'Longitude', 'Housing Median Age', 'Total Rooms',
                      'Total Bedrooms', 'Population', 'Households', 'Median Income']
+    feature_values = input_features[0]
 
     # Plotting the selected features
-    ax.scatter(feature_names, input_features[0], label='Selected Features', color='blue', marker='o', s=100)
+    scatter = ax.scatter(feature_names, feature_values, label='Selected Features', color='blue', marker='o', s=100)
+
+    # Adding tooltips with values
+    for i, txt in enumerate(feature_values):
+        ax.annotate(f'{txt:.2f}', (feature_names[i], feature_values[i]), textcoords="offset points", xytext=(0,10), ha='center')
 
     # Plotting the predicted value as a horizontal line
     ax.axhline(y=prediction[0], color='red', linestyle='--', label=f'Predicted Value: ${prediction[0]:,.2f}')
@@ -106,6 +111,9 @@ if st.button("Predecir"):
     ax.set_title('Selected Features vs Predicted Median House Value')
     ax.legend()
     ax.grid(True)
+
+    # Rotate x-axis labels
+    plt.xticks(rotation=45, ha='right')
 
     st.pyplot(fig)
 
