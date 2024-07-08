@@ -89,7 +89,7 @@ if st.button("Predecir"):
     # Plot of selected features vs prediction
     st.subheader("Selected Features vs Predicted Value")
 
-    fig, ax = plt.subplots(figsize=(10, 6))
+    fig, ax = plt.subplots(figsize=(12, 8))
 
     # Plotting the selected features vs prediction
     feature_names = ['Latitude', 'Longitude', 'Housing Median Age', 'Total Rooms',
@@ -112,10 +112,15 @@ if st.button("Predecir"):
     ax.legend()
     ax.grid(True)
 
+    # Set y-axis limits based on prediction value
+    ax.set_ylim(0, max(prediction[0], max(feature_values)) * 1.1)  # Adjusted to show values comfortably
+
     # Rotate x-axis labels
     plt.xticks(rotation=45, ha='right')
 
     st.pyplot(fig)
+
+
 
 # Run the app
 if __name__ == "__main__":
