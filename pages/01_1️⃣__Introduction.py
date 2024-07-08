@@ -17,12 +17,12 @@ st.markdown(
     "Esta simple aplicacion de Streamlit presenta un Modelo Lineal con Regularizacion L2 con el objetivo de predecir "
     "el valor de casas."
     " utilizando **Metodos Numericos** (Ecuacion Normal Regularizada), con el lenguaje Python.")
-st.markdown("Feel free to check the code, learn or point out any issues!")
+st.markdown("Sientete libre de echarle un vistazo al codigo o comentar cualquier defecto!")
 
 st_lottie(lottie_robot_animation, height=200, quality="high")
 
 br()
-st.subheader("Data Preview: ")
+st.subheader("Previa de la Data: ")
 
 url = "https://raw.githubusercontent.com/jxareas/ml-zoomcamp-2022/master/02-regression/data/housing.feather"
 df = pd.read_feather(url)
@@ -94,19 +94,14 @@ if st.button("Predecir"):
     feature_values = [latitude, longitude, housing_median_age, total_rooms,
                       total_bedrooms, population, households, median_income]
 
-    # Create a figure with subplots for each feature
-    fig, axs = plt.subplots(nrows=2, ncols=4, figsize=(16, 10))
-    fig.suptitle('Selected Features vs Predicted Median House Value', fontsize=16)
+    # Create a bar plot for selected features and predicted value
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.barh(feature_names, feature_values, color='blue', label='Selected Features')
+    ax.axvline(x=prediction[0], color='red', linestyle='--', label=f'Predicted Value: ${prediction[0]:,.2f}')
 
-    for i, (feat_name, feat_value) in enumerate(zip(feature_names, feature_values)):
-        row = i // 4
-        col = i % 4
-        axs[row, col].scatter(X[feat_name], y, alpha=0.3, label='Data Points', color='blue')
-        axs[row, col].scatter(feat_value, prediction[0], label='Predicted Value', color='red', marker='x', s=100)
-        axs[row, col].set_title(feat_name)
-        axs[row, col].set_xlabel(feat_name)
-        axs[row, col].set_ylabel('Median House Value (log)')
-        axs[row, col].legend()
+    ax.set_xlabel('Feature Values')
+    ax.set_title('Selected Features vs Predicted Median House Value')
+    ax.legend()
 
     plt.tight_layout()
     st.pyplot(fig)
